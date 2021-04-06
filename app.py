@@ -16,11 +16,17 @@ PADDING = 7
 
 def choose_file(txt):
   file_path = filedialog.askopenfilename()
+  if not file_path:
+    return
+
   txt.delete(0, END)
   txt.insert(0, file_path)
 
 def choose_dir(txt):
   dir_path = filedialog.askdirectory()
+  if not dir_path:
+    return
+
   txt.delete(0, END)
   txt.insert(0, dir_path)
 
@@ -113,8 +119,6 @@ suffix_checkbox = tk.Checkbutton(main, text='Suffix', onvalue=1, offvalue=0,
 ORIGINAL_TXT_COLOR = original_txt.cget('bg')
 
 copy_btn = tk.Button(main, text='Copy', command=copy)
-
-print(ORIGINAL_TXT_COLOR)
 
 # apply widgets
 main.rowconfigure((0, 1, 2, 3, 4), weight=1)
