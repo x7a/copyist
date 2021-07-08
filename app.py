@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 import tkinter as tk
 from tkinter.constants import *
 from tkinter import filedialog
@@ -14,6 +12,7 @@ main.resizable(False, False)
 
 PADDING = 7
 
+
 def choose_file(txt):
   file_path = filedialog.askopenfilename()
   if not file_path:
@@ -21,6 +20,7 @@ def choose_file(txt):
 
   txt.delete(0, END)
   txt.insert(0, file_path)
+
 
 def choose_dir(txt):
   dir_path = filedialog.askdirectory()
@@ -30,11 +30,13 @@ def choose_dir(txt):
   txt.delete(0, END)
   txt.insert(0, dir_path)
 
+
 def update_check_state(state, txt):
   if state.get() == 1:
     txt.config(state=NORMAL)
   elif state.get() == 0:
     txt.config(state=DISABLED)
+
 
 def copy():
   original_path = original_txt.get().strip()
@@ -84,6 +86,7 @@ def copy():
     copyfile(original_path, path.join(dest_path, name + extension))
 
   showinfo('Done', 'Copying finished!')
+
 
 # widgets
 original_lbl = tk.Label(main, text='Original: ', anchor=W, width=3)
@@ -146,3 +149,4 @@ copy_btn.grid(row=3, column=2, rowspan=2, sticky=NSEW,
               padx=PADDING, pady=PADDING)
 
 main.mainloop()
+
