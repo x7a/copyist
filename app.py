@@ -14,81 +14,81 @@ PADDING = 7
 
 
 def choose_file(txt):
-  file_path = filedialog.askopenfilename()
-  if not file_path:
-    return
+    file_path = filedialog.askopenfilename()
+    if not file_path:
+        return
 
-  txt.delete(0, END)
-  txt.insert(0, file_path)
+    txt.delete(0, END)
+    txt.insert(0, file_path)
 
 
 def choose_dir(txt):
-  dir_path = filedialog.askdirectory()
-  if not dir_path:
-    return
+    dir_path = filedialog.askdirectory()
+    if not dir_path:
+        return
 
-  txt.delete(0, END)
-  txt.insert(0, dir_path)
+    txt.delete(0, END)
+    txt.insert(0, dir_path)
 
 
 def update_check_state(state, txt):
-  if state.get() == 1:
-    txt.config(state=NORMAL)
-  elif state.get() == 0:
-    txt.config(state=DISABLED)
+    if state.get() == 1:
+        txt.config(state=NORMAL)
+    elif state.get() == 0:
+        txt.config(state=DISABLED)
 
 
 def copy():
-  original_path = original_txt.get().strip()
-  filenames_path = filenames_txt.get().strip()
-  dest_path = dest_txt.get().strip()
-  extension = path.splitext(original_path)[1]
+    original_path = original_txt.get().strip()
+    filenames_path = filenames_txt.get().strip()
+    dest_path = dest_txt.get().strip()
+    extension = path.splitext(original_path)[1]
 
-  prefix = prefix_txt.get().lstrip()
-  suffix = suffix_txt.get().rstrip()
+    prefix = prefix_txt.get().lstrip()
+    suffix = suffix_txt.get().rstrip()
 
-  # if prefix or suffix is unchecked, prefix or suffix stays blank
-  if prefix_txt.cget('state') != NORMAL:
-    prefix = ''
-  if suffix_txt.cget('state') != NORMAL:
-    suffix = ''
+    # If prefix or suffix is unchecked, prefix or suffix stays blank
+    if prefix_txt.cget('state') != NORMAL:
+        prefix = ''
+    if suffix_txt.cget('state') != NORMAL:
+        suffix = ''
 
-  # if any of the paths are invalid
-  is_invalid = False
+    # If any of the paths are invalid
+    is_invalid = False
 
-  if not path.isfile(original_path) or original_path == '':
-    original_txt.config(bg='tomato')
-    is_invalid = True
-  else:
-    original_txt.config(bg=ORIGINAL_TXT_COLOR)
+    if not path.isfile(original_path) or original_path == '':
+        original_txt.config(bg='tomato')
+        is_invalid = True
+    else:
+        original_txt.config(bg=ORIGINAL_TXT_COLOR)
 
-  if not path.isfile(filenames_path) or filenames_path == '':
-    filenames_txt.config(bg='tomato')
-    is_invalid = True
-  else:
-    filenames_txt.config(bg=ORIGINAL_TXT_COLOR)
+    if not path.isfile(filenames_path) or filenames_path == '':
+        filenames_txt.config(bg='tomato')
+        is_invalid = True
+    else:
+        filenames_txt.config(bg=ORIGINAL_TXT_COLOR)
 
-  if not path.isdir(dest_path) or dest_path == '':
-    dest_txt.config(bg='tomato')
-    is_invalid = True
-  else:
-    dest_txt.config(bg=ORIGINAL_TXT_COLOR)
+    if not path.isdir(dest_path) or dest_path == '':
+        dest_txt.config(bg='tomato')
+        is_invalid = True
+    else:
+        dest_txt.config(bg=ORIGINAL_TXT_COLOR)
 
-  if is_invalid:
-    return
+    if is_invalid:
+        return
 
-  names = []
-  with open(filenames_path, 'r') as fp:
-    for line in fp:
-      names.append(prefix + line.strip() + suffix)
+    names = []
+    with open(filenames_path, 'r') as fp:
+        for line in fp:
+            names.append(prefix + line.strip() + suffix)
 
-  for name in names:
-    copyfile(original_path, path.join(dest_path, name + extension))
+    for name in names:
+        copyfile(original_path, path.join(dest_path, name + extension))
 
-  showinfo('Done', 'Copying finished!')
+    showinfo('Done', 'Copying finished!')
 
 
-# widgets
+# Widgets
 original_lbl = tk.Label(main, text='Original: ', anchor=W, width=3)
 original_txt = tk.Entry(main)
 original_btn = tk.Button(main, text='Choose',
@@ -108,22 +108,22 @@ prefix_txt = tk.Entry(main, state=DISABLED)
 prefix_checkbox = tk.Checkbutton(main, text='Prefix', onvalue=1, offvalue=0,
                                  variable=prefix_state,
                                  command=lambda:
-                                   update_check_state(prefix_state,
-                                                      prefix_txt))
+                                 update_check_state(prefix_state,
+                                                    prefix_txt))
 
 suffix_state = tk.IntVar()
 suffix_txt = tk.Entry(main, state=DISABLED)
 suffix_checkbox = tk.Checkbutton(main, text='Suffix', onvalue=1, offvalue=0,
                                  variable=suffix_state,
                                  command=lambda:
-                                   update_check_state(suffix_state,
-                                                      suffix_txt))
+                                 update_check_state(suffix_state,
+                                                    suffix_txt))
 
 ORIGINAL_TXT_COLOR = original_txt.cget('bg')
 
 copy_btn = tk.Button(main, text='Copy', command=copy)
 
-# apply widgets
+# Apply widgets
 main.rowconfigure((0, 1, 2, 3, 4), weight=1)
 main.columnconfigure((0, 1, 2), weight=1)
 
@@ -149,4 +149,3 @@ copy_btn.grid(row=3, column=2, rowspan=2, sticky=NSEW,
               padx=PADDING, pady=PADDING)
 
 main.mainloop()
-
